@@ -16,10 +16,11 @@ class UsersTableSeeder extends Seeder
         User::insert($users->makeVisible('password','remember_token')->toArray());
 
         $user = User::find(1);
-        $user->name = 'Aufree';
-        $user->email = '185@qq.com';
-        $user->password = bcrypt('password');
+        $user->name = '张三疯';
+        $user->email = '158@qq.com';
+        $user->password = bcrypt('123456');
         $user->is_admin = true;
+        $user->activated = true;
         $user->save();
     }
 }
