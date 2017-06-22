@@ -21,8 +21,17 @@ $factory->define(App\Modules\User::class, function (Faker\Generator $faker) {
         'email' => $faker->safeEmail,
         'is_admin' => false,
         'activated' => true,
-        'password' => $password ?: $password = bcrypt('password'),
+        'password' => $password ?: $password = bcrypt('123456'),
         'remember_token' => str_random(10),
+        'created_at' => $date_time,
+        'updated_at' => $date_time,
+    ];
+});
+
+$factory->define(App\Modules\Status::class, function (Faker\Generator $faker) {
+    $date_time = $faker->date . ' ' . $faker->time;
+    return [
+        'content'    => $faker->text(),
         'created_at' => $date_time,
         'updated_at' => $date_time,
     ];

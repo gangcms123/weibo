@@ -36,8 +36,11 @@ class UsersController extends Controller
     //显示用户信息
     public function show($id)
     {
-        $user = User::find($id);
-        return view('users.show', compact('user'));
+        $user = User::findOrFail($id);
+        $statuses = $user->statuses()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return view('users.show', compact('user', 'statuses'));
     }
 
     //注册用户
@@ -101,15 +104,15 @@ class UsersController extends Controller
     {
         $view = 'emails.confirm';
         $data = compact('user');
-        $from = 'aufree@estgroupe.com';
-        $name = 'Aufree';
         $to = $user->email;
         $subject = "感谢注册 Sample 应用！请确认你的邮箱。";
 
-        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
-            $message->from($from, $name)->to($to)->subject($subject);
+        //html方式
+        Mail::send($view, $data, function ($message) use ($to, $subject) {
+            $message->to($to)->subject($subject);
         });
 
+        //纯文本方式
        /* Mail::raw($data, function ($message) use ($to,$subject) {
             $message->subject($subject .date('Y-m-d H:i:s'));
             $message->to($to);

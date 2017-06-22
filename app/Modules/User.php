@@ -41,6 +41,19 @@ class User extends Authenticatable
         });
     }
 
+    //一个用户拥有多条微博   一对多关系
+    public function statuses()
+    {
+        return $this->hasMany(Status::class);
+    }
+
+    //获得当前用户发布过的所有微博从数据库中取出，并根据创建时间来倒序排序
+    public function feed()
+    {
+        return $this->statuses()
+            ->orderBy('created_at', 'desc');
+    }
+
     //获得头像
     public function gravatar($size = '100')
     {
