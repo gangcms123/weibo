@@ -12,7 +12,7 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->only([
-            'update','edit','destroy'
+            'update','edit','destroy', 'followings', 'followers'
         ]);
 
         $this->middleware('guest', [
@@ -117,6 +117,24 @@ class UsersController extends Controller
             $message->subject($subject .date('Y-m-d H:i:s'));
             $message->to($to);
         });*/
+    }
+
+    //显示用户关注的人
+    public function followings($id)
+    {
+        $user = User::findOrFail($id);
+        $users = $user->followings()->paginate(10);
+        $title = '关注的人';
+        return view('users.show_follow', compact('users', 'title'));
+    }
+
+    //显示用户粉丝
+    public function followers($id)
+    {
+        $user = User::findOrFail($id);
+        $users = $user->followers()->paginate(10);
+        $title = '粉丝';
+        return view('users.show_follow', compact('users', 'title'));
     }
 
     //用户邮箱验证
