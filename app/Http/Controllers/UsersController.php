@@ -36,8 +36,11 @@ class UsersController extends Controller
     //显示用户信息
     public function show($id)
     {
-        $user = User::find($id);
-        return view('users.show', compact('user'));
+        $user = User::findOrFail($id);
+        $statuses = $user->statuses()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return view('users.show', compact('user', 'statuses'));
     }
 
     //注册用户
