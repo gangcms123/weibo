@@ -101,15 +101,15 @@ class UsersController extends Controller
     {
         $view = 'emails.confirm';
         $data = compact('user');
-        $from = 'aufree@estgroupe.com';
-        $name = 'Aufree';
         $to = $user->email;
         $subject = "感谢注册 Sample 应用！请确认你的邮箱。";
 
-        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
-            $message->from($from, $name)->to($to)->subject($subject);
+        //html方式
+        Mail::send($view, $data, function ($message) use ($to, $subject) {
+            $message->to($to)->subject($subject);
         });
 
+        //纯文本方式
        /* Mail::raw($data, function ($message) use ($to,$subject) {
             $message->subject($subject .date('Y-m-d H:i:s'));
             $message->to($to);
